@@ -175,6 +175,9 @@ impl Registry {
         for grammar in &grammars {
             grammar_id_by_scope_name.insert(grammar.scope_name.to_lowercase(), grammar.id);
             grammar_id_by_name.insert(grammar.name.to_lowercase(), grammar.id);
+            for alias in &grammar.aliases {
+                grammar_id_by_name.insert(alias.clone(), grammar.id);
+            }
             injections_by_grammar.push(HashSet::with_capacity(grammar.injections.len()));
         }
 
@@ -241,9 +244,13 @@ impl Registry {
         if let Some(grammar_id) = self
             .grammar_id_by_name
             .get(grammar_name.to_lowercase().as_str())
+            .copied()
         {
-            self.grammar_id_by_name
-                .insert(alias.to_lowercase(), *grammar_id);
+            let alias = alias.to_lowercase();
+            self.grammars[grammar_id.as_index()]
+                .aliases
+                .push(alias.clone());
+            self.grammar_id_by_name.insert(alias, grammar_id);
         }
     }
 
@@ -717,6 +724,26 @@ mod tests {
         }
 
         out
+    }
+
+    #[cfg(feature = "dump")]
+    #[test]
+    fn aliases_survive_dump_and_restore() {
+        let mut registry = Registry::default();
+        registry
+            .add_grammar_from_path("grammars-themes/packages/tm-grammars/grammars/shellscript.json")
+            .unwrap();
+        registry.add_alias("shellscript", "bash");
+        assert!(registry.contains_grammar("bash"));
+
+        let dumped = registry.dump().unwrap();
+        let restored = Registry::load(&dumped).unwrap();
+
+        assert!(restored.contains_grammar("bash"));
+        assert_eq!(
+            restored.grammar_id_by_name.get("bash"),
+            restored.grammar_id_by_name.get("shellscript"),
+        );
     }
 
     #[test]
