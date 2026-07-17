@@ -394,7 +394,7 @@ impl<'g> Tokenizer<'g> {
         {
             log::debug!(
                 "[get_or_create_pattern_set] Rule: {rule_ref:?} (grammar: {})",
-                &self.registry.grammars[rule_ref.grammar].name
+                self.registry.grammars[rule_ref.grammar].name
             );
             log::debug!("[get_or_create_pattern_set] Scanning patterns");
         }
