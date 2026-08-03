@@ -77,7 +77,7 @@ The list below is in the form: `{lang name} -> aliases`.
 
 <!-- GRAMMARS_START -->
 - abap
-- actionscript-3
+- actionscript-3 -> actionscript, as3
 - ada
 - ahk -> ahk1
 - ahk2
@@ -93,7 +93,7 @@ The list below is in the form: `{lang name} -> aliases`.
 - astro
 - awk
 - ballerina
-- bat -> batch
+- bat -> batch, cmd
 - beancount
 - berry -> be
 - bibtex
@@ -186,7 +186,7 @@ The list below is in the form: `{lang name} -> aliases`.
 - jssm -> fsl
 - jsx
 - julia -> jl
-- just
+- just -> justfile
 - kdl
 - kotlin -> kt, kts
 - kusto -> kql
@@ -216,6 +216,7 @@ The list below is in the form: `{lang name} -> aliases`.
 - nginx
 - nim
 - nix
+- nsis
 - nushell -> nu
 - objective-c -> objc
 - objective-cpp
@@ -233,7 +234,7 @@ The list below is in the form: `{lang name} -> aliases`.
 - polar
 - postcss
 - powerquery
-- powershell -> ps, ps1
+- powershell -> ps, ps1, pwsh
 - prisma
 - prolog
 - proto -> protobuf
@@ -248,6 +249,7 @@ The list below is in the form: `{lang name} -> aliases`.
 - racket
 - raku -> perl6
 - razor
+- rbs -> ruby-signature
 - reg
 - regexp -> regex
 - rel
@@ -267,6 +269,7 @@ The list below is in the form: `{lang name} -> aliases`.
 - shellscript -> bash, sh, shell, zsh
 - shellsession -> console
 - smalltalk
+- smithy
 - solidity
 - soy -> closure-templates
 - sparql
@@ -297,7 +300,7 @@ The list below is in the form: `{lang name} -> aliases`.
 - typst -> typ
 - v
 - vala
-- vb -> cmd
+- vb
 - verilog
 - vhdl
 - viml -> vim, vimscript
