@@ -10,6 +10,7 @@ use crate::themes::{Color, ThemeVariant};
 
 /// Where to put the additional attributes
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Default)]
+#[serde(rename_all = "lowercase")]
 pub enum DataAttrPosition {
     /// On the <pre> only
     Pre,
