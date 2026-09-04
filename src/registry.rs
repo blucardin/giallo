@@ -122,8 +122,8 @@ pub(crate) fn normalize_string(s: &str) -> String {
 
 #[derive(Debug, PartialEq)]
 pub struct GrammarNameAndAliases<'a> {
-    pub name: &'a String,
-    pub aliases: &'a Vec<String>,
+    pub name: &'a str,
+    pub aliases: &'a [String],
 }
 
 /// The main struct in giallo.
