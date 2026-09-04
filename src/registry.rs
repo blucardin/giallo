@@ -316,8 +316,9 @@ impl Registry {
         Ok((tokens, tokenizer.into_scope_interner()))
     }
 
-    /// Output the name and aliases of all grammars in the registry
-    pub fn supported_languages(&self) -> Vec<(String, Vec<String>)> {
+    /// Gets the name and aliases of all grammars in the registry
+    /// Outputs a vector of tuples of the form (Name, Aliases)
+    pub fn get_grammar_names(&self) -> Vec<(String, Vec<String>)> {
         self.grammars.iter().map(|grammar|
             (grammar.name.clone(), grammar.aliases.clone())).collect()
     }
@@ -752,10 +753,10 @@ mod tests {
             .unwrap();
         registry.add_alias("shellscript", "bash");
 
-        assert_eq!(registry.supported_languages(), vec![("shellscript".parse().unwrap(), vec!["bash".parse().unwrap()])]);
+        assert_eq!(registry.get_grammar_names(), vec![("shellscript".parse().unwrap(), vec!["bash".parse().unwrap()])]);
 
         registry.add_alias("shellscript", "bashs");
-        assert_eq!(registry.supported_languages(), vec![("shellscript".parse().unwrap(), vec!["bash".parse().unwrap(), "bashs".parse().unwrap()])]);
+        assert_eq!(registry.get_grammar_names(), vec![("shellscript".parse().unwrap(), vec!["bash".parse().unwrap(), "bashs".parse().unwrap()])]);
     }
 
     #[cfg(feature = "dump")]
