@@ -316,6 +316,12 @@ impl Registry {
         Ok((tokens, tokenizer.into_scope_interner()))
     }
 
+    /// Output the name and aliases of all grammars in the registry
+    pub fn supported_languages(&self) -> Vec<(String, Vec<String>)> {
+        self.grammars.iter().map(|grammar|
+            (grammar.name.clone(), grammar.aliases.clone())).collect()
+    }
+
     /// Checks whether the given lang is available in the registry with its grammar name
     /// or aliases
     pub fn contains_grammar(&self, name: &str) -> bool {
@@ -736,6 +742,20 @@ mod tests {
         }
 
         out
+    }
+
+    #[test]
+    fn supported_languages() {
+        let mut registry = Registry::default();
+        registry
+            .add_grammar_from_path("grammars-themes/packages/tm-grammars/grammars/shellscript.json")
+            .unwrap();
+        registry.add_alias("shellscript", "bash");
+
+        assert_eq!(registry.supported_languages(), vec![("shellscript".parse().unwrap(), vec!["bash".parse().unwrap()])]);
+
+        registry.add_alias("shellscript", "bashs");
+        assert_eq!(registry.supported_languages(), vec![("shellscript".parse().unwrap(), vec!["bash".parse().unwrap(), "bashs".parse().unwrap()])]);
     }
 
     #[cfg(feature = "dump")]
