@@ -120,6 +120,12 @@ pub(crate) fn normalize_string(s: &str) -> String {
     s.replace("\r\n", "\n").replace('\r', "\n")
 }
 
+#[derive(Debug, PartialEq)]
+pub struct GrammarNameAndAliases<'a> {
+    pub name: &'a String,
+    pub aliases: &'a Vec<String>,
+}
+
 /// The main struct in giallo.
 ///
 /// Holds all the grammars and themes and is responsible for highlighting a text. It is not
@@ -317,10 +323,16 @@ impl Registry {
     }
 
     /// Gets the name and aliases of all grammars in the registry
-    /// Outputs a vector of tuples of the form (Name, Aliases)
-    pub fn get_grammar_names(&self) -> Vec<(String, Vec<String>)> {
-        self.grammars.iter().map(|grammar|
-            (grammar.name.clone(), grammar.aliases.clone())).collect()
+    pub fn get_grammar_names(&'_ self) -> Vec<GrammarNameAndAliases<'_>> {
+        self.grammars
+            .iter()
+            .map(|grammar| {
+                GrammarNameAndAliases {
+                    name: &grammar.name,
+                    aliases: &grammar.aliases,
+                }
+            })
+            .collect()
     }
 
     /// Checks whether the given lang is available in the registry with its grammar name
@@ -753,10 +765,22 @@ mod tests {
             .unwrap();
         registry.add_alias("shellscript", "bash");
 
-        assert_eq!(registry.get_grammar_names(), vec![("shellscript".parse().unwrap(), vec!["bash".parse().unwrap()])]);
+        assert_eq!(
+            registry.get_grammar_names(),
+            vec![GrammarNameAndAliases {
+                name: &String::from("shellscript"),
+                aliases: &vec![String::from("bash")],
+            }]
+        );
 
         registry.add_alias("shellscript", "bashs");
-        assert_eq!(registry.get_grammar_names(), vec![("shellscript".parse().unwrap(), vec!["bash".parse().unwrap(), "bashs".parse().unwrap()])]);
+        assert_eq!(
+            registry.get_grammar_names(),
+            vec![GrammarNameAndAliases {
+                name: &String::from("shellscript"),
+                aliases: &vec![String::from("bash"), String::from("bashs")],
+            }]
+        );
     }
 
     #[cfg(feature = "dump")]
